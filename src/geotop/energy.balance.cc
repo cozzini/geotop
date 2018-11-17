@@ -41,6 +41,10 @@
 #include "logger.h"
 #include "timer.h"
 
+#ifdef OMP
+#include <omp.h>
+#endif 
+
 extern long number_novalue, number_absent;
 extern char *string_novalue;
 
@@ -153,6 +157,7 @@ short EnergyBalance(double Dt, double JD0, double JDb, double JDe,
                            Et, A->P->ST, 0., A->P->Lozone, A->P->alpha_iqbal, A->P->beta_iqbal, 0.);
 
     //POINT ENERGY BALANCE
+    # pragma omp parallel for  private(sux)
     for (i=1; i<=A->P->total_channel+A->P->total_pixel; i++)
     {
 
